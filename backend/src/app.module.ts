@@ -1,0 +1,36 @@
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+
+import { validateEnv } from './config/env.validation';
+import { AuthModule } from './auth/auth.module';
+import { ChatModule } from './chat/chat.module';
+import { UsersModule } from './users/users.module';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validate: validateEnv,
+    }),
+
+    MongooseModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        const mongoUri = config.getOrThrow<string>('MONGODB_URI');
+        return {
+          uri: mongoUri,
+          retryAttempts: 3,
+          retryDelay: 1000,
+        };
+      },
+    }),
+
+    AuthModule,
+    UsersModule,
+    ChatModule,
+  ],
+
+  providers: [],
+})
+export class AppModule {}

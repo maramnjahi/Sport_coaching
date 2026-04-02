@@ -1,0 +1,21 @@
+# Node
+**/node_modules/
+backend/dist/
+
+# Python
+**/.venv/
+**/__pycache__/
+**/*.pyc
+
+# Environment files
+**/.env
+
+# Qdrant local storage
+**/qdrant_storage/
+ai-service/data/sources/**/*.pdf
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.cursor/
